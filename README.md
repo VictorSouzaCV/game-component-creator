@@ -2,6 +2,8 @@
 
 Code generator for game components following Clean Architecture principles.
 
+aaaaaaaaaaaaaaaaaaaaaaaa
+
 ## Features
 
 - Automatically creates folder structure and files for new game components

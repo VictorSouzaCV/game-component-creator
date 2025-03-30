@@ -1,6 +1,6 @@
 # Game Clean Architecture - Component Creator
 
-Boilerplate generator for game components following Clean Architecture principles, supports multiple game engines.
+Code generator for game components following Clean Architecture principles. Supports multiple game engines.
 
 ## Features
 
@@ -11,11 +11,11 @@ Boilerplate generator for game components following Clean Architecture principle
 ## Supported engines
 
 - Unity
-- Godot (Mono/C#)
+- Godot (C#)
 
 ## Prerequisites
 
-- Python installed globally on your system
+- Python 3.6 or newer
 
 ## Engine-Specific Requirements
 
@@ -25,8 +25,7 @@ Boilerplate generator for game components following Clean Architecture principle
 
 ## Installation
 
-1. Copy the `create.py` script to your project's components root folder (e.g., `Assets/MyCoolGame` for Unity)
-2. Ensure you have execution permissions for the script
+1. Copy the `create.py` script to your project's components root folder (`Assets` for Unity, `res://` for Godot)
 
 ## Usage
 
@@ -40,7 +39,7 @@ python create.py <ComponentName> <ProjectName> <Engine>
 
 - `ComponentName`: The name of your new component (e.g., "Player", "Inventory")
 - `ProjectName`: Your project's namespace (e.g., "MyCoolGame")
-- `Engine`: Either "Unity" or "Godot"
+- `Engine`: One of the [Supported engines](#supported-engines)
 
 ### Example
 
@@ -50,12 +49,13 @@ python create.py Player MyCoolGame Unity
 
 ## Generated Structure
 
-- **Domain**: Contains the core business logic
-- **View**: Handles the bridge between domain and presentation logic
-- **Adapter**: Defines the interface between View and engine-specific implementation
-- **Factory**: Creates and manages component instances
-- **Tests**: Contains unit tests for the component
-- **Engine-Specific**: Contains platform-specific implementations
+- **Domain**: Core business logic: how the game should behave?
+- **View**: Bridge between domain and engine: how should the game be shown?
+- **Adapter**: Interface for engine-specific implementation: what should the engine provide?
+- **Engine-Specific**: Platform-specific implementations: how the adapter is implemented on the engine?
+- **Factory**: Dependency injection and creation: what does the component require?
+- **Tests**: Test coverage: is the domain logic working and being presented to the user?
+
 
 ## Future Improvements
 
@@ -66,7 +66,3 @@ python create.py Player MyCoolGame Unity
 ## Contributing
 
 Feel free to open issues or submit pull requests for improvements.
-
-## License
-
-[Add your chosen license here]

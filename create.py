@@ -11,6 +11,7 @@ def create_unity_component(component_name, project_name, folders):
     create_file(f"{get_folder_template_by_substring(folders, 'Factory')}/{component_name}Factory.cs", get_factory_template(component_name, project_name))
     create_file(f"{get_folder_template_by_substring(folders, 'Tests')}/{component_name}Tests.cs", get_unity_tests_template(component_name, project_name))
     create_file(f"{get_folder_template_by_substring(folders, 'Behaviours')}/{component_name}Behaviour.cs", get_behaviour_template(component_name, project_name))
+    create_file(f"{get_folder_template_by_substring(folders, 'Behaviours')}/{component_name}InitializationBehaviour.cs", get_initialization_behaviour_template(component_name, project_name))
 
 def get_behaviour_template(component_name, project_name):
     return \
@@ -21,6 +22,41 @@ namespace {project_name}.{component_name}.Unity.Behaviours
 {{
     public class {component_name}Behaviour : MonoBehaviour, I{component_name}Presenter
     {{
+    }}
+}}
+"""   
+
+def get_initialization_behaviour_template(component_name, project_name):
+    return \
+f"""using {project_name}.{component_name}.Core.Factory;
+using {project_name}.{component_name}.Core.Domain;
+using UnityEngine;
+
+namespace {project_name}.{component_name}.Unity.Behaviours
+{{
+    public class {component_name}InitializationBehaviour : MonoBehaviour
+    {{
+        [SerializeField]
+        private {component_name}Behaviour _{component_name[0].lower() + component_name[1:]};
+
+        private {component_name}Factory factory = new();
+
+        private void Awake()
+        {{
+            Initialize();
+        }}
+
+        //This can be called either from Awake if independent or from another orchestrator script
+        public {component_name}Domain Initialize()
+        {{
+            var domain = factory.Create(_{component_name[0].lower() + component_name[1:]});
+            return domain;
+        }}
+
+        public void OnDestroy()
+        {{
+            factory.Clear();
+        }}
     }}
 }}
 """   
@@ -69,6 +105,7 @@ def create_godot_component(component_name, project_name, folders):
     create_file(f"{get_folder_template_by_substring(folders, 'factory')}/{component_name}Factory.cs", get_factory_template(component_name, project_name))
     create_file(f"{get_folder_template_by_substring(folders, 'tests')}/{component_name}Tests.cs", get_godot_tests_template(component_name, project_name))
     create_file(f"{get_folder_template_by_substring(folders, 'nodes')}/{component_name}Node.cs", get_node_template(component_name, project_name))
+    create_file(f"{get_folder_template_by_substring(folders, 'nodes')}/{component_name}InitializationNode.cs", get_initialization_node_template(component_name, project_name))
 
 def get_node_template(component_name, project_name):
     return \
@@ -79,6 +116,41 @@ namespace {project_name}.{component_name}.Godot.Nodes
 {{
     public partial class {component_name}Node : Node, I{component_name}Presenter
     {{
+    }}
+}}
+"""
+
+def get_initialization_node_template(component_name, project_name):
+    return \
+f"""using {project_name}.{component_name}.Core.Factory;
+using {project_name}.{component_name}.Core.Domain;
+using Godot;
+
+namespace {project_name}.{component_name}.Godot.Nodes
+{{
+    public partial class {component_name}InitializationNode : Node
+    {{
+        [Export]
+        private {component_name}Node _{component_name[0].lower() + component_name[1:]};
+
+        private {component_name}Factory factory = new();
+
+        private void _Ready()
+        {{
+            Initialize();
+        }}
+
+        //This can be called either from _Ready if independent or from another orchestrator script
+        public {component_name}Domain Initialize()
+        {{
+            var domain = factory.Create(_{component_name[0].lower() + component_name[1:]});
+            return domain;
+        }}
+
+        public void _ExitTree()
+        {{
+            factory.Clear();
+        }}
     }}
 }}
 """   

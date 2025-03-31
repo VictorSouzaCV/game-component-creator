@@ -21,7 +21,7 @@ Code generator for game components following Clean Architecture principles.
 
 | Feature | Unity | Godot |
 |---------|-------|-------|
-| Test Framework | NUnit | [GdUnit4](https://github.com/MikeSchulze/gdUnit4) |
+| Test Framework | Moq | [GdUnit4](https://github.com/MikeSchulze/gdUnit4) |
 
 ## Installation
 
